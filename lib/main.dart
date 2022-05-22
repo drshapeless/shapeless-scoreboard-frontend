@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_scoreboard/snookers.dart';
+import 'models/snookers.dart';
 
 void main() {
   runApp(const SnookerUploadApp());
@@ -128,11 +128,11 @@ class _SnookerUploadHomeState extends State<SnookerUploadHome> {
       setState(() {
         c = Colors.red;
     });
-    } else {
+  } else {
       setState(() {
         c = Colors.yellow;
     });
-    }
+  }
   }
 
   ElevatedButton _buildBallButton1(String label) {

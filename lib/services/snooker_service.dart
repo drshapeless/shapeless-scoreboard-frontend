@@ -1,0 +1,44 @@
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import '../models/snookers.dart';
+import 'globals.dart' as globals;
+
+Future<Snooker> createSnooker(
+  String winner, String loser, int diff, int red) async {
+  final response = await http.post(
+    Uri.parse('${globals.apiBaseURL}/snooker/'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, dynamic>{
+      'pass': globals.apiPass,
+      'winner': winner,
+      'loser': loser,
+      'diff': diff,
+      'red': red,
+  }),
+);
+
+if (response.statusCode == 201) {
+  return Snooker.fromJson(jsonDecode(response.body)['snooker']);
+} else {
+  throw Exception("Failed to create snooker.");
+}
+}
+
+Future<List<Snooker>> getSnookers(int page) async {
+  final response =
+  await http.get(Uri.parse("${globals.apiBaseURL}/snooker/$page"));
+
+  if (response.statusCode == 200) {
+    List<dynamic> lss = json.decode(response.body)['snookers'];
+    List<Snooker> lsno = [];
+    for (dynamic i in lss) {
+      lsno.add(Snooker.fromJson(i));
+    }
+    return lsno;
+  } else {
+    throw Exception("Failed to get snookers.");
+  }
+}
