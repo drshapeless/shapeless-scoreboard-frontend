@@ -5,14 +5,14 @@ import '../models/snookers.dart';
 import 'globals.dart' as globals;
 
 Future<Snooker> createSnooker(
-  String winner, String loser, int diff, int red) async {
+  String pass, String winner, String loser, int diff, int red) async {
   final response = await http.post(
     Uri.parse('${globals.apiBaseURL}/snooker/'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, dynamic>{
-      'pass': globals.apiPass,
+      'pass': pass,
       'winner': winner,
       'loser': loser,
       'diff': diff,
@@ -23,7 +23,8 @@ Future<Snooker> createSnooker(
 if (response.statusCode == 201) {
   return Snooker.fromJson(jsonDecode(response.body)['snooker']);
 } else {
-  throw Exception("Failed to create snooker.");
+  var err = jsonDecode(response.body)['error'];
+  throw Exception(err);
 }
 }
 
@@ -39,6 +40,7 @@ Future<List<Snooker>> getSnookers(int page) async {
     }
     return lsno;
   } else {
-    throw Exception("Failed to get snookers.");
+    var err = jsonDecode(response.body)['error'];
+    throw Exception(err);
   }
 }
