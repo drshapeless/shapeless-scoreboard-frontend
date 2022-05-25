@@ -85,21 +85,23 @@ Widget build(BuildContext context) {
           _buildRedSwitch(),
           Padding(
             padding: EdgeInsets.only(right: 40),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildBalls8(true, MediaQuery.of(context).size.width),
-                _buildBalls8(false, MediaQuery.of(context).size.width),
-              ],
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildBalls8(true, constraints.maxWidth),
+                    _buildBalls8(false, constraints.maxWidth),
+                  ],
+                );
+              },
             ),
           ),
           const Divider(),
           // debug(),
           Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: _buildHistoryList(),
-          )),
+            child: _buildHistoryList(),
+          ),
           const Divider(),
           _buildReloadButton(),
           Padding(
